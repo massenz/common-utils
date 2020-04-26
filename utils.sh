@@ -5,14 +5,15 @@
 # Created M. Massenzio, 2015-09-01
 # Updated: 2020-04-25
 
-# Prints the absolute path of the file given as $1
+# Prints the absolute path of the file or path.
 #
+# Usage: abspath FILE or PATHNAME
 function abspath {
-    local path=${1:-}
-    if [[ -z ${path} ]]; then
+    local pathname=${1:-}
+    if [[ -z ${pathname} ]]; then
         exit 1
     fi
-    echo $(python -c "import os; print(os.path.abspath(\"${path}\"))")
+    echo $(python -c "import os; print(os.path.abspath(\"${pathname}\"))")
 }
 
 
@@ -31,29 +32,48 @@ function add_path {
 }
 
 
-# Emits a log INFO message; or an ERROR one, if the -e flag is present,
-# prepended by the ISO-8960 timestamp (YY-MM-DDThh:mm).
+# Emits the current data in ISO-8960 format
 #
-# Usage: msg [-e] MSG1 MSG2 ...
+# Usage: now
+function now {
+    echo $(date +"%Y-%m-%dT%H:%M")
+}
+
+# Shared logging method.
+#
+# Usage: log LVL MSG
+function log {
+    local level=${1:-}
+    shift 1
+    local msg="$@"
+    echo "$(now) [${level}] ${msg}"
+}
+
+# Emits an INFO message.
+#
+# Usage: msg MSG1 MSG2 ...
 function msg {
-    local LVL="INFO"
-    if [[ $1 == "-e" ]]; then
-        LVL="ERROR"
-        shift 1
-    fi
-    echo "`date +"%Y-%m-%dT%H:%M"` [${LVL}] $@"
+    log "INFO" "$@"
 }
 
 
 # Emits an ERROR message
 #
-# Usage: errmsg MSG
+# Usage: errmsg MSG1 MSG2 ...
 function errmsg {
-    msg -e "$@"
+    log "ERROR" "$@"
 }
 
 
-# Emits an ERROR message and exits with a non-zero error code.
+# Emits a SUCCESS message
+#
+# Usage: success MSG
+function success {
+    log "SUCCESS" "$@"
+}
+
+
+# Emits a FATAL message and exits with a non-zero error code.
 #
 # Uses the special $- argument to check whether the command is invoked
 # from an interactive shell or from a script and will, respectively, either
@@ -61,7 +81,7 @@ function errmsg {
 #
 # Usage: fatal MSG
 function fatal {
-    errmsg $@
+    log "FATAL" "$@"
     case "$-" in
         *i*) return 1 ;;
           *) exit 1 ;;
