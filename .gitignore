@@ -1,0 +1,31 @@
+# Git Ignore file
+
+# Configuration directories
+.idea/*
+# but allow shared Run Configurations
+!.idea/runConfigurations/
+
+.cproject
+.project
+.settings/
+.conan/
+docs/apidocs/
+
+# CMake files
+CMakeCache.txt
+CMakeFiles/
+Makefile
+cmake_install.cmake
+gen/
+
+# Recommended build directory
+build/
+Debug/
+.conan/
+
+# Compiler intermediate files
+.o
+.so
+.la
+
+cmake-build-debug
