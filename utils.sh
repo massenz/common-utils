@@ -5,25 +5,23 @@
 # Created M. Massenzio, 2015-09-01
 # Updated: 2020-04-25
 
-# Prints the absolute path of the file or path.
+# Prints the absolute path of the file or path; without arguments,
+# it prints the absolute path of the current directory.
 #
-# Usage: abspath FILE or PATHNAME
+# Usage: abspath [FILE | PATH]
 function abspath {
-    local pathname=${1:-}
-    if [[ -z ${pathname} ]]; then
-        exit 1
-    fi
+    local pathname=${1:-$(pwd)}
     echo $(python -c "import os; print(os.path.abspath(\"${pathname}\"))")
 }
 
 
 # Adds the given path to PATH
 #
-# Usage: add_path PATH
-function add_path {
+# Usage: addpath PATH
+function addpath {
     local -r dir="$1"
     if [[ ! -d "${dir}" ]]; then
-      errmsg "Cannot add non-existent ${dir} to \$PATH"
+      fatal "Cannot add non-existent directory (${dir}) to \$PATH"
       return 1
     fi
     if [[ -z $(echo ${PATH} | grep ${dir}) ]]; then
@@ -40,6 +38,9 @@ function now {
 }
 
 # Shared logging method.
+#
+# Do NOT use directly, prefer using pre-defined level functions:
+# `msg`, `errmsg`, `fatal` and `success`.
 #
 # Usage: log LVL MSG
 function log {
