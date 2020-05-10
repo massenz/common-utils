@@ -5,7 +5,7 @@ Project   | common-utils
 :---      | ---:
 Author    | [M. Massenzio](https://bitbucket.org/marco)
 Release   | 0.1.0
-Updated   | 2020-04-25
+Updated   | 2020-05-09
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
@@ -19,13 +19,26 @@ export COMMON_UTILS_DIR=${HOME}/development/common-utils
 
 This can then be used inside other projects to include these files, as needed.
 
-For an example see [this project](https://bitbucket.org/marco/distlib/src/799add59f13d01a7e7c7f761f298642b844af316/CMakeLists.txt#lines-9).
+For an example, see [this project](https://bitbucket.org/marco/distlib/src/799add59f13d01a7e7c7f761f298642b844af316/CMakeLists.txt#lines-9).
 
 To add the functions defined in `utils.sh` use something like:
 
 ```bash
 source ${COMMON_UTILS_DIR}/utils.sh
 ```
+
+## Build/Test scripts
+
+These are generic scripts, which rely on a common `env.sh` script to be `source`d from the same directory (typically, `bin`) in which links to these exist:
+
+```shell script
+ln -s ${COMMON_UTILS_DIR}/build.sh bin/build
+ln -s ${COMMON_UTILS_DIR}/test.sh bin/test
+```
+
+They also expect a `$BUILDDIR` full path to be defined to the build directory, and the tests binaries to be in `$BUILDDIR/tests/bin`.
+
+See the [`libdist` project](https://bitbucket.org/marco/distlib) for an example.
 
 # Contributions
 
