@@ -1,13 +1,13 @@
-# Shared utilities
+# common-utils -- Shared utilities
 
-
-Project   | common-utils
-:---      | ---:
-Author    | [M. Massenzio](https://bitbucket.org/marco)
-Release   | 0.1.0
-Updated   | 2020-05-09
+[![Author](https://img.shields.io/badge/Author-M.%20Massenzio-green)](https://bitbucket.org/marco)
+![Version](https://img.shields.io/badge/Version-0.1.0-blue)
+![Released](https://img.shields.io/badge/Released-2020.05.09-green)
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
+![C++](https://img.shields.io/badge/C++-14-red)
+![OS](https://img.shields.io/badge/OS-Linux,%20MacOS-green)
 
 # Usage
 
@@ -31,9 +31,9 @@ source ${COMMON_UTILS_DIR}/utils.sh
 
 These are generic scripts, which rely on a common `env.sh` script to be `source`d from the same directory (typically, `bin`) in which links to these exist:
 
-```shell script
-ln -s ${COMMON_UTILS_DIR}/build.sh bin/build
-ln -s ${COMMON_UTILS_DIR}/test.sh bin/test
+```bash
+ln -s ${COMMON_UTILS_DIR}/build.sh bin/build && \
+    ln -s ${COMMON_UTILS_DIR}/test.sh bin/test
 ```
 
 They also expect a `$BUILDDIR` full path to be defined to the build directory, and the tests binaries to be in `$BUILDDIR/tests/bin`.
@@ -54,6 +54,6 @@ Remember that:
 >
 > [Google Shell Style Guide](https://google.github.io/styleguide/shellguide.html)
 
-In order to keep the size and complexity of the scripts down to a minimal size, and yet retain enough expressivity within the script for some primitive functionality, I have decided to factor out all the commonality and just `source` it in my scripts.
+In order to keep the size and complexity of Bash scripts down to a minimal size, and yet retain enough expressivity within the script for some primitive functionality, I have decided to factor out all the commonality and just `source` it in my scripts.
 
 To paraphrase the authors of the style guide: *this repository "is more a recognition of its use rather than a suggestion that it be used for widespread deployment"*.
