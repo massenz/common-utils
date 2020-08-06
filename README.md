@@ -72,16 +72,15 @@ This simple Python script tries to marry the best of both worlds, allowing with 
 
 The usage is rather straightforward: we invoke it with a list of the desired option names, followed by the actual command line arguments (`$@`) separated with `--`:
 
-```shell
+```shell script
 # The `-` indicates a bool flag (its presence will set the associated variable, no
 # value expected); the `!` indicates a required argument.
-PARSED=$(./parse_args keep- take counts! mount -- $@)
-source ${PARSED}
+source $(./parse_args keep- take counts! mount -- $@)
 ```
 
 the values of the arguments (if any) are then available via the `${ }` operator:
 
-```shell
+```shell script
 if [[ -n ${keep} ]]; then
   echo "Keeping mount: ${mount}"
 fi
@@ -95,9 +94,23 @@ Keeping mount: /var/loc/bac
 Take: 3, counts: yes
 ```
 
-The trailing `-` (simple dash) indicates a "flag" (a boolean option, which takes no value and whose presence will result in the corresponding variable to be set), while a trailing `!` indicates a required argument:
+The trailing `modifier` changes the meaning of the argument from a simple optional (`--arg`) to: 
 
-```shell
+- `-` : a "flag" (a boolean option, which takes no value and
+ whose presence will result in the corresponding variable to be set); 
+- `!` : indicates a required argument;
+- `+` : a positional, required, argument;
+- `~` : an optional positional argument.
+
+So, using something like:
+
+```shell script
+source $(./parse_args keep- mount! take -- $@)
+```
+
+will result in something like this:
+
+```shell script
 └─( ./parse_example.sh --keep --mount /var/loc/bac --take 3
 usage: [-h] [--keep] [--take TAKE] --counts COUNTS [--mount MOUNT]
 ERROR: the following arguments are required: --counts
@@ -109,18 +122,15 @@ The source code is available [here](parse_args) and revolves around adding argum
 
 ```python
     for arg in args:
-        required = False
-        if arg.endswith('!'):
-            required = True
-            arg = arg[:-1]
-        if arg.endswith('-'):
-            parser.add_argument(f"--{arg[:-1]}", required=required, action='store_true')
-        else:
-            parser.add_argument(f"--{arg}", required=required)
+        kwargs = {}
+        m = re.match(MODIFIED_PATTERN, arg)
+        if m:
+            # Take different action depending on the `modifier`
+            # then add to the parser.
+            parser.add_argument(f"{prefix}{m.group('opt')}", **kwargs)
 ```
 
 We have subclassed the `ArgumentParser` with a [`StderrParser`](parse_args) so that:
 
 * when erroring out, we emit error messages to `stderr` so they don't get "swallowed" in the bash script; and
 * we need to exit with an error code, so that using `set -e` in our shell script will cause it to terminate, instead of executing the `source` command with potentially unexpected consequences.
-

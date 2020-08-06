@@ -14,6 +14,8 @@ function abspath {
     echo $(python -c "import os; print(os.path.abspath(\"${pathname}\"))")
 }
 
+export UTILS_DIR=$(abspath $(dirname $0))
+
 
 # Adds the given path to PATH
 #
@@ -158,14 +160,11 @@ function killn {
 
 # Looks up a filename in an optional subdirectory, or the current one.
 #
-# Usage: findfile [DIR] FILE
+# Usage: findfile [--dir DIR] FILE
 function findfile {
-    local dir="."
-    if [[ $# -eq 2 ]]; then
-        dir=${1}
-        shift 1
-    fi
-    local fname=${1}
+    source $(${UTILS_DIR}/parse_args dir fname+ -- $@)
+    echo "dir: $dir fname: $fname" >&2
+    local where=${dir:-.}
 
-    find ${dir} -name "${fname}" 2>/dev/null
+    find ${where} -name "${fname}" 2>/dev/null
 }
