@@ -6,7 +6,7 @@
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-![C++](https://img.shields.io/badge/C++-14-red)
+![C++](https://img.shields.io/badge/C++-17-red)
 ![OS](https://img.shields.io/badge/OS-Linux,%20MacOS-green)
 
 # Usage
@@ -57,3 +57,70 @@ Remember that:
 In order to keep the size and complexity of Bash scripts down to a minimal size, and yet retain enough expressivity within the script for some primitive functionality, I have decided to factor out all the commonality and just `source` it in my scripts.
 
 To paraphrase the authors of the style guide: *this repository "is more a recognition of its use rather than a suggestion that it be used for widespread deployment"*.
+
+
+# Command-Line Argument Parser
+
+
+There is something to be said for the immediacy of using Bash scripts, especially when dealing with relatively simple system operations; however, parsing command line arguments has always been rather cumbersome and usually done along the lines of painful `if [[ ${1} == '--build' ]] ...`.
+
+On the other hand, Python is pretty convenient for system operations (especially when using the `sh` module) but sometimes a bit of an overkill, or just missing the immediacy of Bash: however, the `argparse` module is nothing short of awesome, when it comes to power and flexibility in parsing command line options.
+
+This simple Python script tries to marry the best of both worlds, allowing with a relatively simple setup to parse arbitrary command line options, and then having their values reflected in the corresponding local environment variables.
+
+## Usage
+
+The usage is rather straightforward: we invoke it with a list of the desired option names, followed by the actual command line arguments (`$@`) separated with `--`:
+
+```shell
+# The `-` indicates a bool flag (its presence will set the associated variable, no
+# value expected); the `!` indicates a required argument.
+PARSED=$(./parse_args keep- take counts! mount -- $@)
+source ${PARSED}
+```
+
+the values of the arguments (if any) are then available via the `${ }` operator:
+
+```shell
+if [[ -n ${keep} ]]; then
+  echo "Keeping mount: ${mount}"
+fi
+```
+
+For example:
+
+```shell
+└─( ./parse_example.sh --keep --mount /var/loc/bac --take 3 --counts yes
+Keeping mount: /var/loc/bac
+Take: 3, counts: yes
+```
+
+The trailing `-` (simple dash) indicates a "flag" (a boolean option, which takes no value and whose presence will result in the corresponding variable to be set), while a trailing `!` indicates a required argument:
+
+```shell
+└─( ./parse_example.sh --keep --mount /var/loc/bac --take 3
+usage: [-h] [--keep] [--take TAKE] --counts COUNTS [--mount MOUNT]
+ERROR: the following arguments are required: --counts
+```
+
+## Implementation
+
+The source code is available [here](parse_args) and revolves around adding arguments to `argparse.ArgumentParser` dynamically:
+
+```python
+    for arg in args:
+        required = False
+        if arg.endswith('!'):
+            required = True
+            arg = arg[:-1]
+        if arg.endswith('-'):
+            parser.add_argument(f"--{arg[:-1]}", required=required, action='store_true')
+        else:
+            parser.add_argument(f"--{arg}", required=required)
+```
+
+We have subclassed the `ArgumentParser` with a [`StderrParser`](parse_args) so that:
+
+* when erroring out, we emit error messages to `stderr` so they don't get "swallowed" in the bash script; and
+* we need to exit with an error code, so that using `set -e` in our shell script will cause it to terminate, instead of executing the `source` command with potentially unexpected consequences.
+
