@@ -12,7 +12,9 @@ BUILD=${1:-Debug}
 mkdir -p ${BUILDDIR}
 cd ${BUILDDIR}
 
-conan install ${BASEDIR} -if=${BUILDDIR} -pr=default --build=missing
+if [[ -f ${BASEDIR}/conanfile.txt ]]; then
+  conan install ${BASEDIR} -if=${BUILDDIR} -pr=default --build=missing
+fi
 
 cmake -DCMAKE_CXX_COMPILER=${CLANG} \
       -DCMAKE_BUILD_TYPE=${BUILD} \

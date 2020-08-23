@@ -94,10 +94,10 @@ Keeping mount: /var/loc/bac
 Take: 3, counts: yes
 ```
 
-The trailing `modifier` changes the meaning of the argument from a simple optional (`--arg`) to: 
+The trailing `modifier` changes the meaning of the argument from a simple optional (`--arg`) to:
 
 - `-` : a "flag" (a boolean option, which takes no value and
- whose presence will result in the corresponding variable to be set); 
+ whose presence will result in the corresponding variable to be set);
 - `!` : indicates a required argument;
 - `+` : a positional, required, argument;
 - `~` : an optional positional argument.
@@ -105,7 +105,7 @@ The trailing `modifier` changes the meaning of the argument from a simple option
 So, using something like:
 
 ```shell script
-source $(./parse_args keep- mount! take -- $@)
+source $(./parse_args keep- mount counts! take -- $@)
 ```
 
 will result in something like this:
