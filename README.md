@@ -1,8 +1,8 @@
 # common-utils -- Shared utilities
 
 [![Author](https://img.shields.io/badge/Author-M.%20Massenzio-green)](https://bitbucket.org/marco)
-![Version](https://img.shields.io/badge/Version-0.1.0-blue)
-![Released](https://img.shields.io/badge/Released-2020.05.09-green)
+![Version](https://img.shields.io/badge/Version-0.1.2-blue)
+![Released](https://img.shields.io/badge/Released-2020.12.29-green)
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
@@ -13,7 +13,7 @@
 
 Simply clone this repository, then point to it via the `$COMMON_UTILS_DIR`, typically in your `.zshrc` (`.bashrc`) script, with something like:
 
-```bash
+```shell
 export COMMON_UTILS_DIR=${HOME}/development/common-utils
 ```
 
@@ -23,7 +23,7 @@ For an example, see [this project](https://bitbucket.org/marco/distlib/src/799ad
 
 To add the functions defined in `utils.sh` use something like:
 
-```bash
+```shell
 source ${COMMON_UTILS_DIR}/utils.sh
 ```
 
@@ -31,7 +31,7 @@ source ${COMMON_UTILS_DIR}/utils.sh
 
 These are generic scripts, which rely on a common `env.sh` script to be `source`d from the same directory (typically, `bin`) in which links to these exist:
 
-```bash
+```shell
 ln -s ${COMMON_UTILS_DIR}/build.sh bin/build && \
     ln -s ${COMMON_UTILS_DIR}/test.sh bin/test
 ```
@@ -72,7 +72,7 @@ This simple Python script tries to marry the best of both worlds, allowing with 
 
 The usage is rather straightforward: we invoke it with a list of the desired option names, followed by the actual command line arguments (`$@`) separated with `--`:
 
-```shell script
+```shell
 # The `-` indicates a bool flag (its presence will set the associated variable, no
 # value expected); the `!` indicates a required argument.
 source $(./parse_args keep- take counts! mount -- $@)
@@ -80,7 +80,7 @@ source $(./parse_args keep- take counts! mount -- $@)
 
 the values of the arguments (if any) are then available via the `${ }` operator:
 
-```shell script
+```shell
 if [[ -n ${keep} ]]; then
   echo "Keeping mount: ${mount}"
 fi
@@ -89,7 +89,7 @@ fi
 For example:
 
 ```shell
-└─( ./parse_example.sh --keep --mount /var/loc/bac --take 3 --counts yes
+$ ./parse_example.sh --keep --mount /var/loc/bac --take 3 --counts yes
 Keeping mount: /var/loc/bac
 Take: 3, counts: yes
 ```
@@ -104,21 +104,21 @@ The trailing `modifier` changes the meaning of the argument from a simple option
 
 So, using something like:
 
-```shell script
+```shell
 source $(./parse_args keep- mount counts! take -- $@)
 ```
 
 will result in something like this:
 
-```shell script
-└─( ./parse_example.sh --keep --mount /var/loc/bac --take 3
+```shell
+$ ./parse_example.sh --keep --mount /var/loc/bac --take 3
 usage: [-h] [--keep] [--take TAKE] --counts COUNTS [--mount MOUNT]
 ERROR: the following arguments are required: --counts
 ```
 
 ## Implementation
 
-The source code is available [here](parse_args) and revolves around adding arguments to `argparse.ArgumentParser` dynamically:
+The source code is available [here](parse_args.py) and revolves around adding arguments to `argparse.ArgumentParser` dynamically:
 
 ```python
     for arg in args:
@@ -130,7 +130,7 @@ The source code is available [here](parse_args) and revolves around adding argum
             parser.add_argument(f"{prefix}{m.group('opt')}", **kwargs)
 ```
 
-We have subclassed the `ArgumentParser` with a [`StderrParser`](parse_args) so that:
+We have subclassed the `ArgumentParser` with a [`StderrParser`](parse_args.py#lines-12) so that:
 
 * when erroring out, we emit error messages to `stderr` so they don't get "swallowed" in the bash script; and
 * we need to exit with an error code, so that using `set -e` in our shell script will cause it to terminate, instead of executing the `source` command with potentially unexpected consequences.
