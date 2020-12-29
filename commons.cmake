@@ -28,3 +28,37 @@ function(get_build_id RESULT_NAME)
     ENDIF(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/.git)
     SET(${RESULT_NAME} ${RESULT} PARENT_SCOPE)
 endfunction(get_build_id)
+
+
+# Configures installation of shared lib, headers.
+#
+function(config_install INSTALL_DIR INSTALL_RESULT)
+
+  if(DEFINED INSTALL_DIR)
+      # Generated configuration file, containing version and build number.
+      install(FILES ${PROJECT_BINARY_DIR}/version.h DESTINATION
+              "${INSTALL_DIR}/include/${PROJECT_NAME}")
+
+      # Install Library headers.
+      install(DIRECTORY ${INCLUDE_DIR}/ DESTINATION ${INSTALL_DIR}/include/${PROJECT_NAME}
+              FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp")
+      message("Installing library headers from ${PROJECT_BINARY_DIR}/include to ${INSTALL_DIR}/include/${PROJECT_NAME}")
+
+      # Install all dependencies
+      install(DIRECTORY ${PROJECT_BINARY_DIR}/include DESTINATION
+              ${INSTALL_DIR}
+              FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp")
+      message("Installing dependencies headers from ${PROJECT_BINARY_DIR}/include to ${INSTALL_DIR}/include")
+
+      install(DIRECTORY ${PROJECT_BINARY_DIR}/lib DESTINATION
+              ${INSTALL_DIR}
+              FILES_MATCHING PATTERN "*.so*" PATTERN "*.dylib*")
+      message("Installing shared libraries from ${PROJECT_BINARY_DIR}/lib to ${INSTALL_DIR}/lib")
+
+      set(${INSTALL_RESULT} "done" PARENT_SCOPE)
+  else()
+      message(WARNING "INSTALL_DIR is not defined, files will not be installed."
+                      " Use -DINSTALL_DIR=/path/to/install to enable")
+  endif()
+
+endfunction(config_install)
