@@ -29,3 +29,6 @@ Debug/
 .la
 
 cmake-build-debug
+
+*.tar
+*.gz

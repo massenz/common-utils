@@ -1,20 +1,23 @@
 # common-utils -- Shared utilities
 
 [![Author](https://img.shields.io/badge/Author-M.%20Massenzio-green)](https://bitbucket.org/marco)
-![Version](https://img.shields.io/badge/Version-0.1.2-blue)
-![Released](https://img.shields.io/badge/Released-2020.12.29-green)
+![Version](https://img.shields.io/badge/Version-0.3.0-blue)
+![Released](https://img.shields.io/badge/Released-2021.11.22-green)
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 ![C++](https://img.shields.io/badge/C++-17-red)
 ![OS](https://img.shields.io/badge/OS-Linux,%20MacOS-green)
 
+This is a collection of utility scripts to simplify option parsing from shell scripts, as well as simplify build/test of CMake-built C++ projects.
+
 # Usage
 
-Simply clone this repository, then point to it via the `$COMMON_UTILS_DIR`, typically in your `.zshrc` (`.bashrc`) script, with something like:
+Simply download a release tarball of this repository, and untar it somewhere into your system; then point to it via the `$UTILS_DIR`, typically in your `.zshrc` (`.bashrc`) script, with something like:
 
 ```shell
-export COMMON_UTILS_DIR=${HOME}/development/common-utils
+sudo tar xf common-utils-$VERSION.tar.gz /opt
+export UTILS_DIR=/opt/common-utils
 ```
 
 This can then be used inside other projects to include these files, as needed.
@@ -24,7 +27,13 @@ For an example, see [this project](https://bitbucket.org/marco/distlib/src/799ad
 To add the functions defined in `utils.sh` use something like:
 
 ```shell
-source ${COMMON_UTILS_DIR}/utils.sh
+source ${UTILS_DIR}/utils.sh
+```
+
+It is recommended that you add `$UTILS_DIR` to your system's `PATH`:
+
+```shell
+export PATH=$PATH:$UTILS_DIR
 ```
 
 ## Build/Test scripts

@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+#
+# Packages this project's scripts into a downloadable tarball
+set -eux
+source utils.sh
+
+VERSION=0.3.0
+DEST=/tmp/common-utils
+
+mkdir -p ${DEST}
+for f in build parse-args test utils; do
+  cp $f.* ${DEST}/$f
+  chmod +x $DEST/$f
+done
+cp commons.cmake $DEST/
+
+tar cvf common-utils-$VERSION.tar.gz -C /tmp common-utils
+rm -rf $DEST

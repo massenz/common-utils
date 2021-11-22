@@ -1,9 +1,9 @@
-#!/bin/bash
-#
-# Utility functions for shell scripting
+# Utility functions for shell scripting.
 #
 # Created M. Massenzio, 2015-09-01
 # Updated: 2020-04-25
+#
+# Do not execute this script directly; `source` it instead from your own scripts.
 
 # Prints the absolute path of the file or path; without arguments,
 # it prints the absolute path of the current directory.
@@ -32,7 +32,7 @@ function addpath {
 }
 
 
-# Emits the current data in ISO-8960 format
+# Emits the current data in ISO-8960 format, truncated to the nearest minute, no TZ.
 #
 # Usage: now
 function now {
@@ -162,7 +162,7 @@ function killn {
 #
 # Usage: findfile [--dir DIR] FILE
 function findfile {
-    source $(${UTILS_DIR}/parse_args dir fname+ -- $@)
+    source $(parse_args dir fname+ -- $@)
     echo "dir: $dir fname: $fname" >&2
     local where=${dir:-.}
 
