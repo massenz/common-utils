@@ -14,5 +14,6 @@ for f in build parse-args test utils; do
 done
 cp commons.cmake $DEST/
 
-tar cvf common-utils-$VERSION.tar.gz -C /tmp common-utils
+mkdir -p rel
+tar cvf rel/common-utils-$VERSION.tar.gz -C /tmp common-utils
 rm -rf $DEST
