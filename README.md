@@ -11,51 +11,7 @@
 
 This is a collection of utility scripts to simplify option parsing from shell scripts, as well as simplify build/test of CMake-built C++ projects.
 
-# Usage
-
-Simply download a release tarball of this repository, and untar it somewhere into your system; then point to it via the `$UTILS_DIR`, typically in your `.zshrc` (`.bashrc`) script, with something like:
-
-```shell
-sudo tar xf common-utils-$VERSION.tar.gz /opt
-export UTILS_DIR=/opt/common-utils
-```
-
-This can then be used inside other projects to include these files, as needed.
-
-For an example, see [this project](https://bitbucket.org/marco/distlib/src/799add59f13d01a7e7c7f761f298642b844af316/CMakeLists.txt#lines-9).
-
-To add the functions defined in `utils.sh` use something like:
-
-```shell
-source ${UTILS_DIR}/utils.sh
-```
-
-It is recommended that you add `$UTILS_DIR` to your system's `PATH`:
-
-```shell
-export PATH=$PATH:$UTILS_DIR
-```
-
-## Build/Test scripts
-
-These are generic scripts, which rely on a common `env.sh` script to be `source`d from the same directory (typically, `bin`) in which links to these exist:
-
-```shell
-ln -s ${COMMON_UTILS_DIR}/build.sh bin/build && \
-    ln -s ${COMMON_UTILS_DIR}/test.sh bin/test
-```
-
-They also expect a `$BUILDDIR` full path to be defined to the build directory, and the tests binaries to be in `$BUILDDIR/tests/bin`.
-
-See the [`libdist` project](https://bitbucket.org/marco/distlib) for an example.
-
-# Contributions
-
-Are warmly appreciated; please open an `Issue` to describe what you think is missing and you'd like to see added; or even feel free to contribute code via `Pull Request`.
-
-This repository follows strictly the [Google Shell Style Guide](https://google.github.io/styleguide/shellguide.html), please make sure you understand it, and follow it in your contribution.
-
-## Why these utilities
+# Why these utilities
 
 Remember that:
 
@@ -66,6 +22,89 @@ Remember that:
 In order to keep the size and complexity of Bash scripts down to a minimal size, and yet retain enough expressivity within the script for some primitive functionality, I have decided to factor out all the commonality and just `source` it in my scripts.
 
 To paraphrase the authors of the style guide: *this repository "is more a recognition of its use rather than a suggestion that it be used for widespread deployment"*.
+
+
+# Usage
+
+Simply download a release tarball of this repository, and untar it somewhere into your system; then point to it via the `$UTILS_DIR`, typically in your `.zshrc` (`.bashrc`) script, with something like:
+
+```shell
+sudo tar xf common-utils-$VERSION.tar.gz /opt
+export UTILS_DIR=/opt/common-utils
+```
+
+The `commons.cmake` can then be used inside other projects to include these files, as needed.
+
+For an example, see [this project](https://bitbucket.org/marco/distlib/src/799add59f13d01a7e7c7f761f298642b844af316/CMakeLists.txt#lines-9).
+
+To add the functions defined in `utils.sh` use something like:
+
+```shell
+source ${UTILS_DIR}/utils
+```
+
+It is recommended that you add `$UTILS_DIR` to your system's `PATH`:
+
+```shell
+export PATH=$PATH:$UTILS_DIR
+```
+
+Even better, use the Common Utilities:
+
+```shell
+source ${UTILS_DIR}/utils && \
+    addpath ${UTILS_DIR} && \
+    success "Added ${UTILS_DIR} to PATH"
+```
+
+## Build/Test scripts
+
+These are generic scripts, which rely on a common `env.sh` script to be `source`d from the current directory:
+
+```shell
+export UTILS_DIR=...
+export PATH=$PATH:$UTILS_DIR
+
+build && runtests
+```
+
+They also expect a `$BUILDDIR` full path to point to the build directory, and the tests binaries to be in `$BUILDDIR/tests/bin`.
+
+If your directory structure is something like this:
+
+```
+project
+  |
+  `-  env.sh
+  |
+  `- src/
+  |
+  `- build
+  `- ... etc.
+```
+
+your `env.sh` could look something like (`utils` is `source`d by the `build` script immediately before `source`ing `env.sh`):
+
+```shell
+set -eu
+
+BUILDDIR=$(abspath "./build")
+CLANG=$(which clang++)
+
+OS_NAME=$(uname -s)
+msg "Build Platform: ${OS_NAME}"
+
+... other configurations
+```
+
+See the [`libdist` project](https://bitbucket.org/marco/distlib) for an example.
+
+
+# Contributions
+
+Are warmly appreciated; please open an `Issue` to describe what you think is missing and you'd like to see added; or even feel free to contribute code via `Pull Request`.
+
+This repository follows strictly the [Google Shell Style Guide](https://google.github.io/styleguide/shellguide.html), please make sure you understand it, and follow it in your contribution.
 
 
 # Command-Line Argument Parser

@@ -19,15 +19,17 @@ BUILD=${1:-Debug}
 
 msg "Build folder in ${BUILDDIR}"
 mkdir -p ${BUILDDIR}
-cd ${BUILDDIR}
-
 if [[ -f conanfile.txt ]]; then
-  conan install . -if=${BUILDDIR} -pr=default --build=missing
+    msg "Installing binary dependencies..."
+    conan install . -if=${BUILDDIR} -pr=default --build=missing
+    success "Dependecies installed"
 fi
 
 UTILS="-DCOMMON_UTILS_DIR=${UTILS_DIR}"
 
+cd ${BUILDDIR}
 cmake -DCMAKE_CXX_COMPILER=${CLANG} \
       -DCMAKE_BUILD_TYPE=${BUILD} \
       ${UTILS} ..
 cmake --build . --target all -- -j 6
+success "Build complete"

@@ -4,7 +4,7 @@
 set -eu
 source utils.sh
 
-VERSION=0.4.0
+VERSION=0.4.1
 DEST=/tmp/common-utils
 
 msg "Bulding Common Utilities release ${VERSION}"
@@ -14,6 +14,9 @@ for f in build parse-args runtests utils; do
   chmod +x $DEST/$f
 done
 cp commons.cmake $DEST/
+
+# Generate HTML instructions.
+pandoc README.md -t html -o ${DEST}/README.html
 
 mkdir -p rel
 tar cvf rel/common-utils-$VERSION.tar.gz -C /tmp common-utils
