@@ -1,13 +1,20 @@
 #!/bin/bash
 
 set -eu
-source $(dirname $0)/env.sh
-source ${COMMON_UTILS_DIR}/utils.sh
+
+if [[ -z ${UTILS_DIR} || ! -d ${UTILS_DIR} ]]; then
+    echo "[ERROR] The \$UTILS_DIR env var must be defined and " \
+         "point to the directory which contains the Common Utilities"
+    exit 1
+fi
+
+source ${UTILS_DIR}/utils
+source env.sh
 
 verbose=""
 memcheck=""
 valgrind_bin="${BUILDDIR}/tests/bin/unit_tests"
-source $(${COMMON_UTILS_DIR}/parse_args verbose- memcheck- valgrind_bin~ -- $@)
+source $(parse-args verbose- memcheck- valgrind_bin~ -- $@)
 
 
 # Runs tests of the given type (unit, integration)

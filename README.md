@@ -1,8 +1,8 @@
 # common-utils -- Shared utilities
 
 [![Author](https://img.shields.io/badge/Author-M.%20Massenzio-green)](https://bitbucket.org/marco)
-![Version](https://img.shields.io/badge/Version-0.3.0-blue)
-![Released](https://img.shields.io/badge/Released-2021.11.22-green)
+![Version](https://img.shields.io/badge/Version-0.4.0-blue)
+![Released](https://img.shields.io/badge/Released-2021.11.27-green)
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
