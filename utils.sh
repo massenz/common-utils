@@ -120,7 +120,7 @@ function wrap {
 # of stdout: it will just check the exit code and emit the message passed as $1 if
 # an error occurs; it will not capture stdout.
 #
-# Usage: wrap_unbuffered ERRMSG CMD [ARGS...]
+# Usage: wrap_no_out ERRMSG CMD [ARGS...]
 function wrap_no_out {
     if [[  $# -lt 2 ]]; then
         errmsg "Usage: $0 ERRMSG CMD [ARGS...]"
@@ -167,4 +167,26 @@ function findfile {
     local where=${dir:-.}
 
     find ${where} -name "${fname}" 2>/dev/null
+}
+
+
+# Creates and initializes a new Python Virtualenv
+#
+# Usage: newenv NAME
+function newenv {
+    local envname=${1:-}
+    if [[ -z ${envname} ]]
+    then
+        fatal "Virtualenv NAME not provided"
+    fi
+    mkvirtualenv -p $(which python3) ${envname}
+    reqs="${HOME}/Dropbox/development/python/${envname}.txt"
+    if [[ ! -e ${reqs} ]]
+    then
+        log WARN "${reqs} does not exist, using default requirements.txt"
+        reqs="${HOME}/Dropbox/development/python/requirements.txt"
+    fi
+    wrap_no_out "Failed to upgrade pip" pip install -U pip
+    wrap pip install -U -r ${reqs}
+    success "Virtualenv ${envname} created"
 }
