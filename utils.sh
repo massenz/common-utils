@@ -162,7 +162,7 @@ function killn {
 #
 # Usage: findfile [--dir DIR] FILE
 function findfile {
-    source $(parse_args dir fname+ -- $@)
+    source $(parse-args dir fname+ -- $@)
     echo "dir: $dir fname: $fname" >&2
     local where=${dir:-.}
 
