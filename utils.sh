@@ -181,6 +181,7 @@ function newenv {
     if [[ -z ${envname} ]]
     then
         fatal "Virtualenv NAME not provided"
+        return 1
     fi
     mkvirtualenv -p $(which python3) ${envname}
     wrap_no_out "Failed to upgrade pip" pip install -U pip
