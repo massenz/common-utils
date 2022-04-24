@@ -11,7 +11,9 @@
 # Usage: abspath [FILE | PATH]
 function abspath {
     local pathname=${1:-$(pwd)}
-    echo $(python -c "import os; print(os.path.abspath(\"${pathname}\"))")
+    local cmd=python3
+    if [[ ! -x $(which $cmd) ]]; then cmd=python; fi
+    echo $(${cmd} -c "import os; print(os.path.abspath(\"${pathname}\"))")
 }
 
 export UTILS_DIR=$(abspath $(dirname $0))
