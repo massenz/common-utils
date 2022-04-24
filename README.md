@@ -29,7 +29,7 @@ To paraphrase the authors of the style guide: *this repository "is more a recogn
 Simply download a release tarball of this repository, and untar it somewhere into your system; then point to it via the `$UTILS_DIR`, typically in your `.zshrc` (`.bashrc`) script, with something like:
 
 ```shell
-sudo tar xf common-utils-$VERSION.tar.gz /opt
+sudo tar xf common-utils-$VERSION.tar.gz -C /opt
 export UTILS_DIR=/opt/common-utils
 ```
 
