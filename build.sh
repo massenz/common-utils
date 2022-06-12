@@ -12,24 +12,24 @@ if [[ -z ${UTILS_DIR} || ! -d ${UTILS_DIR} ]]; then
     exit 1
 fi
 
-source ${UTILS_DIR}/utils
+source "${UTILS_DIR}"/utils
 source env.sh
 
 BUILD=${1:-Debug}
 
 msg "Build folder in ${BUILDDIR}"
-mkdir -p ${BUILDDIR}
+mkdir -p "${BUILDDIR}"
 if [[ -f conanfile.txt ]]; then
     msg "Installing binary dependencies..."
-    conan install . -if=${BUILDDIR} -pr=default --build=missing
-    success "Dependecies installed"
+    conan install . -if="${BUILDDIR}" -pr=default --build=missing
+    success "Dependencies installed"
 fi
 
 UTILS="-DCOMMON_UTILS_DIR=${UTILS_DIR}"
 
-cd ${BUILDDIR}
-cmake -DCMAKE_CXX_COMPILER=${CLANG} \
-      -DCMAKE_BUILD_TYPE=${BUILD} \
-      ${UTILS} ..
+cd "${BUILDDIR}"
+cmake -DCMAKE_CXX_COMPILER="${CLANG}" \
+      -DCMAKE_BUILD_TYPE="${BUILD}" \
+      "${UTILS}" ..
 cmake --build . --target all -- -j 6
 success "Build complete"
