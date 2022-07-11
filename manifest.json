@@ -1,0 +1,7 @@
+{
+  "revision" : "0.6.0",
+  "metadata": {
+    "author": "marco@alertavert.com",
+    "comment": "Common utilities for Shell Scripts"
+  }
+}

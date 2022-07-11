@@ -4,16 +4,19 @@
 set -eu
 source utils.sh
 
-VERSION=$(git tag | tail -1)
+declare -r DEST=/tmp/common-utils
+declare -r BASE=$(abspath $(dirname $0))
+
+${BASE}/make-tag
+declare VERSION=$(git tag | tail -1)
 if [[ -z ${VERSION} ]]
 then
-  echo "Found no applicable tags to use as the VERSION"
+  echo "Found no applicable tags to use as VERSION"
   exit 1
 fi
-
-DEST=/tmp/common-utils
-
 msg "Bulding Common Utilities release ${VERSION}"
+
+
 mkdir -p ${DEST}
 for f in build parse-args runtests utils; do
   cp $f.* ${DEST}/$f

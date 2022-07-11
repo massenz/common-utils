@@ -1,0 +1,18 @@
+#!/usr/bin/env zsh
+#
+# Created by M. Massenzio, 2022-07-10
+
+set -eu
+
+base=$(dirname $0)
+manifest=${base}/manifest.json
+version=$(cat ${manifest} | jq ".revision" | sed "s/\"//g")
+
+if git tag | grep ${version}
+then
+    echo "ERROR: Tag ${version} exists"
+    exit 1
+fi
+
+git tag -a -m "Rev. ${version}" ${version}
+git push --tags
