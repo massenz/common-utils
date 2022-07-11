@@ -16,8 +16,6 @@ function abspath {
     echo $(${cmd} -c "import os; print(os.path.abspath(\"${pathname}\"))")
 }
 
-export UTILS_DIR=$(abspath $(dirname $0))
-
 
 # Adds the given path to PATH
 #
