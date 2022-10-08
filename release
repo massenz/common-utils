@@ -7,25 +7,22 @@
 #
 # Author: Marco Massenzio (marco@alertavert.com)
 #
-
-#
 # Packages this project's scripts into a downloadable tarball
 set -eu
 source utils.sh
 
-declare -r DEST=/tmp/common-utils
-declare -r BASE=$(abspath $(dirname $0))
-
-declare VERSION=$(${BASE}/get-version.sh ${BASE}/manifest.json)
-if [[ -z ${VERSION} ]]
+declare -r TARBALL=${1:-}
+if [[ -z ${TARBALL} ]]
 then
-  echo "Found no applicable tags to use as VERSION"
+  echo "Usage: $(basename $0) TARBALL"
+  fatal "Destination TARBALL filename MUST be defined"
   exit 1
 fi
-msg "Building Common Utilities release ${VERSION}"
 
+declare -r DEST=$(mktemp -d)
+declare -r BASE=$(abspath $(dirname $0))
 
-mkdir -p ${DEST}
+pushd ${BASE}
 for f in build parse-args runtests utils get-version; do
   cp $f.* ${DEST}/$f
   chmod +x $DEST/$f
@@ -34,12 +31,7 @@ cp -r commons.cmake parse_args.py templates/ $DEST/
 
 # Generate HTML instructions.
 pandoc README.md -t html -o ${DEST}/README.html
+popd
 
-mkdir -p rel
-tar cf rel/common-utils-$VERSION.tar.gz -C /tmp common-utils
-rm -rf $DEST
-success "Release tarball in rel/common-utils-$VERSION.tar.gz"
-
-# TODO: move this to Github Action on push to release branch
-#git tag -a -m "Rev. ${version}" ${version}
-#git push --tags
+tar cf ${TARBALL} -C ${DEST} .
+success "Release tarball in ${TARBALL}"
