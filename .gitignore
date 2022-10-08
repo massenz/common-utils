@@ -32,3 +32,4 @@ cmake-build-debug
 
 *.tar
 *.gz
+__pycache__/

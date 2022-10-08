@@ -1,4 +1,10 @@
-#!/usr/bin/env python3
+
+#  Copyright (c) 2022 AlertAvert.com.  All rights reserved.
+#
+#  Licensed under the Apache License, Version 2.0
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Author: Marco Massenzio (marco@alertavert.com)
 
 import argparse
 import re
@@ -6,7 +12,7 @@ import sys
 from tempfile import mkstemp
 
 
-MODIFIED_PATTERN=re.compile(r"(?P<opt>\w+)(?P<modifier>[-!~\+])?")
+MODIFIED_PATTERN = re.compile(r"(?P<opt>\w+)(?P<modifier>[-!~\+])?")
 
 
 class StderrParser(argparse.ArgumentParser):

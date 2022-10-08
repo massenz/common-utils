@@ -1,5 +1,14 @@
 #!/usr/bin/env bash
 #
+# Copyright (c) 2022 AlertAvert.com.  All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Author: Marco Massenzio (marco@alertavert.com)
+#
+
+#
 # Example script for the `parse-args` script
 #
 # Usage: parse_example [-h] [--keep] [--take TAKE] --counts COUNTS [--mount MOUNT]
@@ -13,7 +22,7 @@ set -e
 
 # The `-` indicates a bool flag (its presence will set the associated variable, no
 # value expected); the `!` indicates a required argument.
-PARSED=$(parse-args keep- take counts! mount -- $@)
+PARSED=$(/tmp/common-utils/parse-args keep- take counts! mount -- $@)
 source ${PARSED}
 
 # For example:

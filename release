@@ -1,5 +1,14 @@
 #!/usr/bin/env bash
 #
+# Copyright (c) 2022 AlertAvert.com.  All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Author: Marco Massenzio (marco@alertavert.com)
+#
+
+#
 # Packages this project's scripts into a downloadable tarball
 set -eu
 source utils.sh
@@ -7,14 +16,13 @@ source utils.sh
 declare -r DEST=/tmp/common-utils
 declare -r BASE=$(abspath $(dirname $0))
 
-${BASE}/make-tag
-declare VERSION=$(git tag | tail -1)
+declare VERSION=$(${BASE}/templates/json-get-version.sh)
 if [[ -z ${VERSION} ]]
 then
   echo "Found no applicable tags to use as VERSION"
   exit 1
 fi
-msg "Bulding Common Utilities release ${VERSION}"
+msg "Building Common Utilities release ${VERSION}"
 
 
 mkdir -p ${DEST}
@@ -22,7 +30,7 @@ for f in build parse-args runtests utils; do
   cp $f.* ${DEST}/$f
   chmod +x $DEST/$f
 done
-cp commons.cmake $DEST/
+cp -r commons.cmake parse_args.py templates/ $DEST/
 
 # Generate HTML instructions.
 pandoc README.md -t html -o ${DEST}/README.html
@@ -31,3 +39,7 @@ mkdir -p rel
 tar cvf rel/common-utils-$VERSION.tar.gz -C /tmp common-utils
 rm -rf $DEST
 success "Release tarball in rel/common-utils-$VERSION.tar.gz"
+
+# TODO: move this to Github Action on push to release branch
+#git tag -a -m "Rev. ${version}" ${version}
+#git push --tags
