@@ -24,7 +24,7 @@ jobs:
         run: |
           git config user.name "$AUTHOR"
           git config user.email "<$EMAIL>"
-          TAG=$(./get-version.sh)
+          TAG=$(./get-version.sh manifest.json)
           git tag -a $TAG -m "Release $TAG"
           git push --tags
           echo TAG=${TAG} >> $GITHUB_ENV
@@ -32,6 +32,7 @@ jobs:
       - name: Build tarball
         run: |
           tarball=common-utils-${{ env.TAG }}.tar.gz
+          sudo apt install -y pandoc
           ./release ${tarball}
           echo TARBALL=${tarball} >> $GITHUB_ENV
 
