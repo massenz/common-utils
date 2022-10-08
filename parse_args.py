@@ -12,7 +12,7 @@ import sys
 from tempfile import mkstemp
 
 
-MODIFIED_PATTERN = re.compile(r"(?P<opt>\w+)(?P<modifier>[-!~\+])?")
+MODIFIED_PATTERN = re.compile(r"(?P<opt>\w+)(?P<modifier>[-!?+])?")
 
 
 class StderrParser(argparse.ArgumentParser):
@@ -45,7 +45,7 @@ def make_parser(*args):
             kwargs['action'] = 'store_true' if mod == '-' else 'store'
             if mod == '+':
                 prefix = ''
-            elif mod == '~':
+            elif mod == '?':
                 prefix = ''
                 kwargs['nargs'] = '?'
             else:

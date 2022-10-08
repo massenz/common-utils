@@ -16,7 +16,7 @@ source utils.sh
 declare -r DEST=/tmp/common-utils
 declare -r BASE=$(abspath $(dirname $0))
 
-declare VERSION=$(${BASE}/templates/json-get-version.sh)
+declare VERSION=$(${BASE}/get-version.sh ${BASE}/manifest.json)
 if [[ -z ${VERSION} ]]
 then
   echo "Found no applicable tags to use as VERSION"
@@ -26,7 +26,7 @@ msg "Building Common Utilities release ${VERSION}"
 
 
 mkdir -p ${DEST}
-for f in build parse-args runtests utils; do
+for f in build parse-args runtests utils get-version; do
   cp $f.* ${DEST}/$f
   chmod +x $DEST/$f
 done
@@ -36,7 +36,7 @@ cp -r commons.cmake parse_args.py templates/ $DEST/
 pandoc README.md -t html -o ${DEST}/README.html
 
 mkdir -p rel
-tar cvf rel/common-utils-$VERSION.tar.gz -C /tmp common-utils
+tar cf rel/common-utils-$VERSION.tar.gz -C /tmp common-utils
 rm -rf $DEST
 success "Release tarball in rel/common-utils-$VERSION.tar.gz"
 

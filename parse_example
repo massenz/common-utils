@@ -7,7 +7,6 @@
 #
 # Author: Marco Massenzio (marco@alertavert.com)
 #
-
 #
 # Example script for the `parse-args` script
 #
@@ -15,21 +14,24 @@
 #
 # Use `./parse_example -h` to get a full description of the available CLI args that
 # this command makes available to the script.
-
+#
 # This prevents `source` to be invoked at all (and most likely error out)
 # when parse-args fails to parse the given arguments.
 set -e
 
-# The `-` indicates a bool flag (its presence will set the associated variable, no
-# value expected); the `!` indicates a required argument.
-PARSED=$(/tmp/common-utils/parse-args keep- take counts! mount -- $@)
+# No modified indicates an optional, "regular" --option flag, named as the argument.
+# A trailing `-` denotes a bool flag (its presence will set the associated variable, no
+# value expected); use `!` for a required named option, and `+` for a required positional.
+# Use `?` for an optional positional arg.
+PARSED=$(./parse-args.sh keep- take counts! mount+ attach? -- $@)
 source ${PARSED}
 
 # For example:
 #
-#   $ ./parse_example --keep --take 3 --counts 5 --mount /dev/fpo
+#   $ ./parse_example --keep --take 3 --counts 5 /dev/fpo
 #   Keeping mount: /dev/fpo
 #   Take 3, counts: 5
+#   attach was: []
 
 # Here we are using the parsed arguments as ordinary bash variables.
 if [[ -n ${keep} ]]; then
@@ -37,6 +39,10 @@ if [[ -n ${keep} ]]; then
 fi
 
 echo "Take ${take}, counts: ${counts}"
+
+# The last positional, `attach` was optional, so it may be empty or not;
+# and, if empty, it won't cause an error.
+echo "attach was: [${attach}]"
 
 # This is optional, and removes the temporary file.
 rm ${PARSED}

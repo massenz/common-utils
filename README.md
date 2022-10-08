@@ -132,7 +132,7 @@ An optional trailing `modifier` changes the meaning of the argument:
 - `!` : indicates a required argument, its absence will cause an error;
 - `-` : designates a boolean argument, which takes no value and whose presence will result in the corresponding variable to be set);
 - `+` : a positional, required, argument;
-- `~` : an optional positional argument.
+- `?` : an optional positional argument.
 
 > *NOTE*
 >
@@ -141,22 +141,31 @@ An optional trailing `modifier` changes the meaning of the argument:
 For example (see the [`parse_example`](parse_example) script):
 
 ```shell
-source $(./parse_args keep- mount counts! take -- $@)
+source $(./parse_args keep- counts! take mount+ -- $@)
 ```
 
 will result in:
 
 ```shell
-$ ./parse_example --keep --mount /var/loc/bac --take 3 --counts yes
+$ ./parse_example --keep --take 3 --counts yes /var/loc/bac
 
 Keeping mount: /var/loc/bac
 Take: 3, counts: yes
 
-$ ./parse_example.sh --keep --mount /var/loc/bac --take 3
+$ ./parse_example.sh --keep --take 3 /mnt/media
 
 usage: [-h] [--keep] [--take TAKE] --counts COUNTS [--mount MOUNT]
 ERROR: the following arguments are required: --counts
 ```
+
+Note how the `mount` "positional" argument is *required* and cannot be omitted:
+
+```shell
+$ ./parse_example --keep --take 3 --counts no         
+usage: [-h] [--keep] [--take TAKE] --counts COUNTS mount
+ERROR: the following arguments are required: mount
+```
+
 
 ## Implementation
 

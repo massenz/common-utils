@@ -5,7 +5,9 @@ bin := build/bin
 cov := build/coverage
 # TODO: replace with name of binary, if appropriate
 out := $(bin)/server
-tag := $(shell ./get-version)
+# TODO: install the https://github.com/massenz/common-utils library
+#       or implement your own script to generate the version tag.
+tag := $(shell go-make-version-tag)
 
 # TODO: replace with name of image as appropriate
 image := <<IMAGE NAME GOES HERE>>
@@ -87,7 +89,10 @@ services: ## Starts the Redis and LocalStack containers
 
 ##@ TLS Support
 #
-# This section is WIP and subject to change
+# NOTE: This section is WIP and subject to change.
+#
+# Install CFSSL following the instructions here:
+#   https://github.com/cloudflare/cfssl#installation
 
 config_dir := ssl-config
 ca-csr := $(config_dir)/ca-csr.json
