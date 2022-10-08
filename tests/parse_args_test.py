@@ -26,7 +26,7 @@ class TestParser(unittest.TestCase):
             c = p.parse_args(["--foo", "3", "my_value"])
 
     def test_many_positionals(self):
-        p = make_parser("foo", "bar+", "baz+", "qufix~")
+        p = make_parser("foo", "bar+", "baz+", "qufix?")
         c = p.parse_args(["--foo", "3", "bar_value", "baz_value"])
         self.assertEqual("3", c.foo)
         self.assertEqual("bar_value", c.bar)
@@ -44,7 +44,7 @@ class TestParser(unittest.TestCase):
             p.parse_args(["--foo", "3", "--qufix*", "bar_value"])
 
     def test_optional_positional(self):
-        p = make_parser("out", "bar~")
+        p = make_parser("out", "bar?")
         c = p.parse_args(["--out", "/tmp/bar", "bar_value"])
         self.assertEqual("bar_value", c.bar)
         self.assertEqual("/tmp/bar", c.out)
@@ -74,7 +74,7 @@ class TestWriter(unittest.TestCase):
         parser.add_argument("another", nargs='?')
 
         opts = parser.parse_args(["--test", "value", "/tmp/foo"])
-        tmp = parse_opts(("test", "fname+", "another~"), opts)
+        tmp = parse_opts(("test", "fname+", "another?"), opts)
         self.assertEqual("value", tmp["test"])
         self.assertEqual("/tmp/foo", tmp["fname"])
 

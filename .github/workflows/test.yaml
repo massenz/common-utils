@@ -1,0 +1,34 @@
+# Upon pushing to the main branch it runs all tests.
+#
+# Copyright (c) 2022 AlertAvert.com.  All rights reserved.
+# Author: Marco Massenzio (marco@alertavert.com)
+#
+name: Build & Test
+
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
+
+env:
+  PYTHONPATH: '.'
+  
+jobs:
+  Test:
+    name: Run tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python 3
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.10'
+      - name: Install dependencies
+        run: pip install pytest pytest-md
+      - uses: pavelzw/pytest-action@v2
+        with:
+          emoji: false
+          verbose: false
+          job-summary: true
