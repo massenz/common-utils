@@ -1,6 +1,8 @@
 # common-utils -- Shared utilities
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Build & Test](https://github.com/massenz/common-utils/actions/workflows/test.yaml/badge.svg)](https://github.com/massenz/common-utils/actions/workflows/test.yaml)
+[![Release](https://github.com/massenz/common-utils/actions/workflows/release.yaml/badge.svg)](https://github.com/massenz/common-utils/actions/workflows/release.yaml)
 
 ![C++](https://img.shields.io/badge/C++-17-red)
 ![OS](https://img.shields.io/badge/OS-Linux,%20MacOS-green)
