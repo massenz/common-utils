@@ -33,7 +33,7 @@ jobs:
         run: |
           tarball=common-utils-${{ env.TAG }}.tar.gz
           sudo apt install -y pandoc
-          ./release ${tarball}
+          ./package-release.sh ${tarball}
           echo TARBALL=${tarball} >> $GITHUB_ENV
 
       - uses: ncipollo/release-action@v1.10.0
