@@ -1,6 +1,8 @@
 # common-utils -- Shared utilities
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Build & Test](https://github.com/massenz/common-utils/actions/workflows/test.yaml/badge.svg)](https://github.com/massenz/common-utils/actions/workflows/test.yaml)
+[![Release](https://github.com/massenz/common-utils/actions/workflows/release.yaml/badge.svg)](https://github.com/massenz/common-utils/actions/workflows/release.yaml)
 
 ![C++](https://img.shields.io/badge/C++-17-red)
 ![OS](https://img.shields.io/badge/OS-Linux,%20MacOS-green)
@@ -25,14 +27,31 @@ To paraphrase the authors of the style guide: *this repository "is more a recogn
 - a [Command-Line Argument Parser](#command-line-argument-parser)
 - [Build / Test scripts](#buildtest-scripts)
 
-# Usage
+# Install
 
-Simply download a release tarball of this repository, and untar it somewhere into your system; then point to it via the `$UTILS_DIR`, typically in your `.zshrc` (`.bashrc`) script, with something like:
+The easiest way to install is to use the installer script:
 
 ```shell
-sudo tar xf common-utils-$VERSION.tar.gz -C /opt
-export UTILS_DIR=/opt/common-utils
+export COMMON_UTILS=/path/to/common-utils
+wget -O - -q https://cdn.githubraw.com/massenz/common-utils/main/install.sh | VERSION=0.7.2 zsh -s
 ```
+
+> **NOTE**<br/>
+> If you are using the Bourne Shell (`bash`) replace `zsh` in the command above with `bash`
+
+use a recent [Release](https://github.com/massenz/common-utils/releases) for the `VERSION` string.
+
+The initialization necessary to use the `common-utils` is written out to `$HOME/.commonrc` either copy it to your shell's initialization script (`.zshrc` if you are using the Z Shell; `.bashrc` for the Bourne Shell) or source it directly from there.
+
+Alternatively, you can simply download the tarball from the Releases page and do the above manually; this is what is needed to properly use the utils, in your `.zshrc`:
+
+```shell
+export COMMON_UTILS=/path/to/common-utils
+export PATH=$PATH:${COMMON_UTILS}
+source ${COMMON_UTILS}/utils
+```
+
+## Usage
 
 The `commons.cmake` can then be used inside other projects to include these files, as needed.
 
