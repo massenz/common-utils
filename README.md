@@ -33,13 +33,18 @@ The easiest way to install is to use the installer script:
 
 ```shell
 export COMMON_UTILS=/path/to/common-utils
-wget -O - -q https://cdn.githubraw.com/massenz/common-utils/main/install.sh | VERSION=0.7.2 zsh -s
+export VERSION=...
+http -b https://cdn.githubraw.com/massenz/common-utils/$VERSION/install.sh | zsh -s
 ```
+
+with a recent [Release](https://github.com/massenz/common-utils/releases) for the `VERSION` string.
 
 > **NOTE**<br/>
 > If you are using the Bourne Shell (`bash`) replace `zsh` in the command above with `bash`
 
-use a recent [Release](https://github.com/massenz/common-utils/releases) for the `VERSION` string.
+> **NOTE**<br/>
+> This requires the [httpie](https://httpie.io) package, as `wget` seems to choke on verifying GitHub's SSL Certificates
+
 
 The initialization necessary to use the `common-utils` is written out to `$HOME/.commonrc` either copy it to your shell's initialization script (`.zshrc` if you are using the Z Shell; `.bashrc` for the Bourne Shell) or source it directly from there.
 
