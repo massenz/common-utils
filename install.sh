@@ -1,21 +1,22 @@
-set -eu
+set -eux
 echo "Installing common-utils Rel. $VERSION to $COMMON_UTILS"
 
-if [[ ! -x http ]]
+if [[ ! -x $(which http) ]]
 then
     echo "ERROR: Missing httpie package, please see https://httpie.io/download"
     exit 1
 fi
 
 declare -r TARBALL="https://github.com/massenz/common-utils/releases/download/$VERSION/common-utils-$VERSION.tar.gz"
-declare -r DEST=$(mktemp -d)
+declare -r DEST=$(mktemp -d)/common-utils.tar.gz
 
 if [[ ! -d ${COMMON_UTILS} ]]
 then
   mkdir -p ${COMMON_UTILS}
 fi
-http -d -o /tmp/common-utils.tar.gz ${TARBALL}
-tar xf /tmp/common-utils.tar.gz -C ${COMMON_UTILS}
+echo "Downloading ${TARBALL}"
+http -d -o ${DEST} ${TARBALL} && \
+    tar xf ${DEST} -C ${COMMON_UTILS}
 
 source ${COMMON_UTILS}/utils
 success "Utilities installed to ${COMMON_UTILS}"
