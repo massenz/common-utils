@@ -9,7 +9,7 @@
 #
 # Packages this project's scripts into a downloadable tarball
 set -eu
-source utils.sh
+source utils
 
 declare -r TARBALL=${1:-}
 if [[ -z ${TARBALL} ]]

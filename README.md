@@ -32,7 +32,7 @@ To paraphrase the authors of the style guide: *this repository "is more a recogn
 The easiest way to install is to use the installer script:
 
 ```shell
-export COMMON_UTILS=/path/to/common-utils
+export UTILS_DIR=/path/to/common-utils
 export VERSION=...
 curl -s -L https://cdn.githubraw.com/massenz/common-utils/$VERSION/install.sh | zsh -s
 ```
@@ -48,9 +48,9 @@ The initialization necessary to use the `common-utils` is written out to `$HOME/
 Alternatively, you can simply download the tarball from the Releases page and do the above manually; this is what is needed to properly use the utils, in your `.zshrc`:
 
 ```shell
-export COMMON_UTILS=/path/to/common-utils
-export PATH=$PATH:${COMMON_UTILS}
-source ${COMMON_UTILS}/utils
+export UTILS_DIR=/path/to/common-utils
+export PATH=$PATH:${UTILS_DIR}
+source ${UTILS_DIR}/utils
 ```
 
 ## Usage
@@ -81,7 +81,7 @@ source ${UTILS_DIR}/utils && \
 
 # Utils
 
-The `utils` script contains a collection of simple utilities for shell scripts (see [`utils.sh`](utils.sh) for a full description of each command).
+The `utils` script contains a collection of simple utilities for shell scripts (see [`utils.sh`](utils) for a full description of each command).
 
 - general file and path handlers:
 ```

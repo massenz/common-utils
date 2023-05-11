@@ -34,7 +34,7 @@ if [[ -f conanfile.txt ]]; then
     success "Dependencies installed"
 fi
 
-UTILS="-DCOMMON_UTILS_DIR=${UTILS_DIR}"
+UTILS="-DUTILS_DIR_DIR=${UTILS_DIR}"
 
 cd "${BUILDDIR}"
 cmake -DCMAKE_CXX_COMPILER="${CLANG}" \

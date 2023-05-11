@@ -23,7 +23,7 @@ set -e
 # A trailing `-` denotes a bool flag (its presence will set the associated variable, no
 # value expected); use `!` for a required named option, and `+` for a required positional.
 # Use `?` for an optional positional arg.
-PARSED=$(./parse-args.sh keep- take counts! mount+ attach? -- $@)
+PARSED=$(.parse-args keep- take counts! mount+ attach? -- $@)
 source ${PARSED}
 
 # For example:
