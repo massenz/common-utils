@@ -200,3 +200,31 @@ function newenv {
     fi
     success "Virtualenv ${envname} created"
 }
+
+# Inserts a pause in the progress, and an option to terminate early.
+#
+# Usage: should_continue
+function should_continue {
+    if read -q "?Paused. Hit 'y' when ready to continue, or 'n' to terminate "; then
+        echo -e "\nOk, continuing...\n"
+    else
+        echo -e "\nAborting\n"
+        exit 1
+    fi
+}
+
+# Asks an optional question and returns a non-zero value if the user
+# responds anything other than `y`.
+#
+# Should be used in an `if` statement:
+#
+#   if ask "About to remove resource, continue?"; then
+#      ... do the deed
+#   fi
+# Usage: ask [PROMPT]
+function ask {
+    read -q "?${1:-Proceed?} [y/n] "
+    res=$?
+    echo -n "\n"
+    return $res
+}
