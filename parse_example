@@ -15,6 +15,9 @@
 # Use `./parse_example -h` to get a full description of the available CLI args that
 # this command makes available to the script.
 #
+# For this to work, you need to have installed `common-utils` as detailed in README
+# and added the install directory (COMMON_UTILS) to the PATH.
+
 # This prevents `source` to be invoked at all (and most likely error out)
 # when parse-args fails to parse the given arguments.
 set -e
@@ -23,7 +26,7 @@ set -e
 # A trailing `-` denotes a bool flag (its presence will set the associated variable, no
 # value expected); use `!` for a required named option, and `+` for a required positional.
 # Use `?` for an optional positional arg.
-PARSED=$(./parse-args.sh keep- take counts! mount+ attach? -- $@)
+PARSED=$(parse-args keep- take counts! mount+ attach? -- $@)
 source ${PARSED}
 
 # For example:

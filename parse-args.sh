@@ -9,4 +9,5 @@
 # Author: Marco Massenzio (marco@alertavert.com)
 #
 
-python3 parse_args.py $@
+workdir=$(dirname $(which parse-args))
+python3 ${workdir}/parse_args.py $@
