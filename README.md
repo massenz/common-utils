@@ -62,21 +62,21 @@ For an example, see [this project](https://bitbucket.org/marco/distlib/src/799ad
 To add the functions defined in `utils.sh` use something like:
 
 ```shell
-source ${UTILS_DIR}/utils
+source ${COMMON_UTILS}/utils
 ```
 
-It is recommended that you add `$UTILS_DIR` to your system's `PATH`:
+It is recommended that you add `$COMMON_UTILS` to your system's `PATH`:
 
 ```shell
-export PATH=$PATH:$UTILS_DIR
+export PATH=$PATH:$COMMON_UTILS
 ```
 
 Even better, use the Common Utilities:
 
 ```shell
-source ${UTILS_DIR}/utils && \
-    addpath ${UTILS_DIR} && \
-    success "Added ${UTILS_DIR} to PATH"
+source ${COMMON_UTILS}/utils && \
+    addpath ${COMMON_UTILS} && \
+    success "Added ${COMMON_UTILS} to PATH"
 ```
 
 # Utils
@@ -212,8 +212,8 @@ We have subclassed the `ArgumentParser` with a [`StderrParser`](parse_args.py#li
 These are generic scripts, which rely on a common `env.sh` script to be `source`d from the current directory:
 
 ```shell
-export UTILS_DIR=...
-export PATH=$PATH:$UTILS_DIR
+export COMMON_UTILS=...
+export PATH=$PATH:$COMMON_UTILS
 
 build && runtests
 ```
