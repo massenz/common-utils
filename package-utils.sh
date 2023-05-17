@@ -30,7 +30,8 @@ done
 cp -r commons.cmake parse_args.py templates/ $DEST/
 
 # Generate HTML instructions.
-pandoc README.md -t html -o ${DEST}/README.html
+pandoc README.md -t html -o /tmp/README.html
+cat head.html /tmp/README.html >${DEST}/README.html
 popd
 
 tar cf ${TARBALL} -C ${DEST} .
