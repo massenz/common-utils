@@ -29,29 +29,10 @@ To paraphrase the authors of the style guide: *this repository "is more a recogn
 
 # Install
 
-The easiest way to install is to use the installer script:
+1. `cd ~/code/github.com/copilotiq`
+2. `git clone git@github.com:CopilotIQ/common-utils.git`
+3. `make install`
 
-```shell
-export COMMON_UTILS=/path/to/common-utils
-export VERSION=...
-curl -s -L https://cdn.githubraw.com/massenz/common-utils/$VERSION/install.sh | zsh -s
-```
-
-with a recent [Release](https://github.com/massenz/common-utils/releases) for the `VERSION` string.
-
-> **NOTE**
->
-> If you are using the Bourne Shell (`bash`) replace `zsh` in the command above with `bash`
-
-The initialization necessary to use the `common-utils` is written out to `$HOME/.commonrc` either copy it to your shell's initialization script (`.zshrc` if you are using the Z Shell; `.bashrc` for the Bourne Shell) or source it directly from there.
-
-Alternatively, you can simply download the tarball from the Releases page and do the above manually; this is what is needed to properly use the utils, in your `.zshrc`:
-
-```shell
-export COMMON_UTILS=/path/to/common-utils
-export PATH=$PATH:${COMMON_UTILS}
-source ${COMMON_UTILS}/utils
-```
 
 ## Usage
 
