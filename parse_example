@@ -16,7 +16,7 @@
 # this command makes available to the script.
 #
 # For this to work, you need to have installed `common-utils` as detailed in README
-# and added the install directory (COMMON_UTILS) to the PATH.
+# and added the install directory (UTILS_DIR) to the PATH.
 
 # This prevents `source` to be invoked at all (and most likely error out)
 # when parse-args fails to parse the given arguments.
