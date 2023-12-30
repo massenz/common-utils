@@ -1,3 +1,12 @@
+#
+# Copyright (c) 2020-2023 AlertAvert.com.  All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Author: Marco Massenzio (marco@alertavert.com)
+#
+
 set -eu
 
 declare -r TARBALL="https://github.com/massenz/common-utils/releases/download/$VERSION/common-utils-$VERSION.tar.gz"

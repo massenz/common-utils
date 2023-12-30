@@ -14,22 +14,19 @@ docs/apidocs/
 # CMake files
 CMakeCache.txt
 CMakeFiles/
-Makefile
-cmake_install.cmake
 gen/
+cmake_install.cmake
+cmake-build-debug
 
 # Recommended build directory
 build/
 Debug/
-.conan/
 
 # Compiler intermediate files
 .o
 .so
 .la
-
-cmake-build-debug
+__pycache__/
 
 *.tar
 *.gz
-__pycache__/

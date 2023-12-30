@@ -1,4 +1,14 @@
-#  Copyright (c) 2022 AlertAvert.com.  All rights reserved.
+#  Copyright (c) 2020-2023 AlertAvert.com.  All rights reserved.
+#
+#  Licensed under the Apache License, Version 2.0
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Author: Marco Massenzio (marco@alertavert.com)
+#
+#  Licensed under the Apache License, Version 2.0
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Author: Marco Massenzio (marco@alertavert.com)
 #
 #  Licensed under the Apache License, Version 2.0
 #  http://www.apache.org/licenses/LICENSE-2.0
@@ -19,11 +29,22 @@ class TestParser(unittest.TestCase):
         self.assertEqual("my_value", c.bar)
 
     def test_required(self):
+        # --foo is optional; --needs is required, and `bar` is a positional required arg
         p = make_parser("foo", "needs!", "bar+")
         c = p.parse_args(["--foo", "3", "--needs", "4", "my_value"])
         self.assertEqual("4", c.needs)
-        with self.assertRaises(SystemExit):
-            c = p.parse_args(["--foo", "3", "my_value"])
+        self.assertEqual("3", c.foo)
+        self.assertEqual("my_value", c.bar)
+
+    def test_required_missing_raise(self):
+        # --foo is optional; --needs is required, and `bar` is a positional required arg
+        p = make_parser("foo", "needs!", "bar+")
+        c = p.parse_args(["--needs", "14", "my_value"])
+        self.assertEqual("14", c.needs)
+        with self.assertRaises(SystemExit, msg="Missing required --needs flag should raise"):
+            p.parse_args(["--foo", "3", "my_value"])
+        with self.assertRaises(SystemExit, msg="Missing required positional arg should raise"):
+            p.parse_args(["--needs", "is_needed"])
 
     def test_many_positionals(self):
         p = make_parser("foo", "bar+", "baz+", "qufix?")
@@ -33,6 +54,8 @@ class TestParser(unittest.TestCase):
         self.assertEqual("baz_value", c.baz)
         self.assertIsNone(c.qufix)
 
+    def test_many_positionals_with_optional(self):
+        p = make_parser("foo", "bar+", "baz+", "qufix?")
         c = p.parse_args(["--foo", "a-val", "bartender", "baz_v", "q-val"])
         self.assertEqual("a-val", c.foo)
         self.assertEqual("bartender", c.bar)
@@ -40,14 +63,23 @@ class TestParser(unittest.TestCase):
         self.assertIsNotNone(c.qufix)
         self.assertEqual("q-val", c.qufix)
 
-        with self.assertRaises(SystemExit):
-            p.parse_args(["--foo", "3", "--qufix*", "bar_value"])
+    def test_many_positionals_missing_required(self):
+        p = make_parser("foo", "bar+", "baz+")
+        with self.assertRaises(SystemExit, msg="Missing required positional argument should raise"):
+            p.parse_args(["--foo", "3", "bar_value"])
 
     def test_optional_positional(self):
         p = make_parser("out", "bar?")
         c = p.parse_args(["--out", "/tmp/bar", "bar_value"])
         self.assertEqual("bar_value", c.bar)
         self.assertEqual("/tmp/bar", c.out)
+
+    def test_positional_array(self):
+        p = make_parser("pos*")
+        c = p.parse_args(["one", "two", "three"])
+        self.assertIn("one", c.pos)
+        self.assertIn("two", c.pos)
+        self.assertIn("three", c.pos)
 
 
 class TestWriter(unittest.TestCase):
@@ -84,4 +116,3 @@ class TestWriter(unittest.TestCase):
 
         with self.assertRaises(SystemExit):
             parser.parse_args(["--test", "value"])
-

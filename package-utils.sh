@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
 #
-# Copyright (c) 2022 AlertAvert.com.  All rights reserved.
+# Copyright (c) 2020-2023 AlertAvert.com.  All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0
 # http://www.apache.org/licenses/LICENSE-2.0
 #
 # Author: Marco Massenzio (marco@alertavert.com)
 #
-# Packages this project's scripts into a downloadable tarball
 set -eu
 source utils.sh
 
@@ -30,7 +29,8 @@ done
 cp -r commons.cmake parse_args.py templates/ $DEST/
 
 # Generate HTML instructions.
-pandoc README.md -t html -o ${DEST}/README.html
+pandoc README.md -t html -o /tmp/README.html
+cat head.html /tmp/README.html >${DEST}/README.html
 popd
 
 tar cf ${TARBALL} -C ${DEST} .
