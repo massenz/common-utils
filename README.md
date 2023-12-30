@@ -152,12 +152,20 @@ An optional trailing `modifier` changes the meaning of the argument:
 
 - `!` : indicates a required argument, its absence will cause an error;
 - `-` : designates a boolean argument, which takes no value and whose presence will result in the corresponding variable to be set);
-- `+` : a positional, required, argument;
-- `?` : an optional positional argument.
+- `+` : a *positional*, required, argument;
+- `?` : an optional *positional* argument.
+- `*` : an array of *positional* arguments (possibly empty, if none is present); 
+        should be obviously last.
 
 > *NOTE*
 >
-> "Positional" arguments are those which are not preceded by a `--arg` flag and whose **order** matters when the command line is parsed.  As such, obviously, an *optional* positional **must** be the last in the list.
+> "Positional" arguments are those which are not preceded by a `--arg` flag and whose **order** 
+matters when the command line is parsed.  As such, obviously, an *optional* positional 
+(or an array) **must** be the last in the list.
+> 
+> It is best to avoid combining optional positionals (`?`) and positional arrays (`*`) as they may
+result in unexpected behavior.
+
 
 For example (see the [`parse_example`](parse_example) script):
 

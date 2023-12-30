@@ -1,17 +1,12 @@
 #!/usr/bin/env bash
 #
-# Copyright (c) 2022 AlertAvert.com.  All rights reserved.
+# Copyright (c) 2020-2023 AlertAvert.com.  All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0
 # http://www.apache.org/licenses/LICENSE-2.0
 #
 # Author: Marco Massenzio (marco@alertavert.com)
 #
-# Usage: get-version BUILD
-# Extracts version from the build settings
-#
-#  BUILD  either a build.gradle file, or build.settings with a `VERSION = <version>` line
-#         or a JSON Manifest with a "version" field.
 
 set -eu
 
@@ -51,4 +46,3 @@ else
       sed -E 's/^[[:blank:]]*version[[:blank:]]*=?[[:blank:]]*//' |\
       sed "s/'//g" | sed 's/[[:blank:]]*$//'
 fi
-

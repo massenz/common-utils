@@ -1,5 +1,15 @@
 
-#  Copyright (c) 2022 AlertAvert.com.  All rights reserved.
+#  Copyright (c) 2020-2023 AlertAvert.com.  All rights reserved.
+#
+#  Licensed under the Apache License, Version 2.0
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Author: Marco Massenzio (marco@alertavert.com)
+#
+#  Licensed under the Apache License, Version 2.0
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Author: Marco Massenzio (marco@alertavert.com)
 #
 #  Licensed under the Apache License, Version 2.0
 #  http://www.apache.org/licenses/LICENSE-2.0
@@ -12,7 +22,7 @@ import sys
 from tempfile import mkstemp
 
 
-MODIFIED_PATTERN = re.compile(r"(?P<opt>\w+)(?P<modifier>[-!?+])?")
+MODIFIED_PATTERN = re.compile(r"(?P<opt>\w+)(?P<modifier>[-!?+*])?")
 
 
 class StderrParser(argparse.ArgumentParser):
@@ -48,6 +58,9 @@ def make_parser(*args):
             elif mod == '?':
                 prefix = ''
                 kwargs['nargs'] = '?'
+            elif mod == '*':
+                prefix = ''
+                kwargs['nargs'] = '*'
             else:
                 prefix = '--'
             parser.add_argument(f"{prefix}{m.group('opt')}", **kwargs)
@@ -74,7 +87,15 @@ def main(names, values):
     tmpfile = mkstemp(text=True)[1]
     with open(tmpfile, 'w') as dest:
         for key, val in options.items():
-            dest.write(f"{key}={val}\n")
+            # Arrays in Shell scripts are declared differently
+            # from how Python prints them out.
+            if isinstance(val, list):
+                dest.write(f"{key}=(")
+                for item in val:
+                    dest.write(f"{item} ")
+                dest.write(")\n")
+            else:
+                dest.write(f"{key}={val}\n")
     print(tmpfile)
 
 
