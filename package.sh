@@ -8,7 +8,7 @@
 # Author: Marco Massenzio (marco@alertavert.com)
 #
 set -eu
-source utils.sh
+source scripts/utils.sh
 
 declare -r TARBALL=${1:-}
 if [[ -z ${TARBALL} ]]
@@ -22,15 +22,16 @@ declare -r DEST=$(mktemp -d)
 declare -r BASE=$(abspath $(dirname $0))
 
 pushd ${BASE}
-for f in build parse-args runtests utils get-version; do
-  cp $f.* ${DEST}/$f
+for f in build get-version parse-args runtests utils ; do
+  cp scripts/$f.sh ${DEST}/$f
   chmod +x $DEST/$f
 done
-cp -r commons.cmake parse_args.py templates/ $DEST/
+cp -r templates/ $DEST/
+cp parse-args/parse_args.py $DEST/
 
 # Generate HTML instructions.
 pandoc README.md -t html -o /tmp/README.html
-cat head.html /tmp/README.html >${DEST}/README.html
+cat head.html /tmp/README.html tail.html >${DEST}/README.html
 popd
 
 tar cf ${TARBALL} -C ${DEST} .

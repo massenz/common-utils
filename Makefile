@@ -5,8 +5,16 @@
 #
 # Author: Marco Massenzio (marco@alertavert.com)
 
-TESTDIR := tests
+TESTDIR := parse-args
+VERSION = $(shell ./scripts/get-version.sh manifest.json)
+TARBALL := common-utils-$(VERSION).tar.gz
+
+package:
+	./package.sh $(TARBALL)
 
 test:
 	@echo "--- Running tests in the ${TESTDIR} directory"
 	python -m unittest discover -s ${TESTDIR}
+
+version:
+	@echo $(VERSION)

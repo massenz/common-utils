@@ -81,7 +81,7 @@ source ${COMMON_UTILS}/utils && \
 
 # Utils
 
-The `utils` script contains a collection of simple utilities for shell scripts (see [`utils.sh`](utils.sh) for a full description of each command).
+The `utils` script contains a collection of simple utilities for shell scripts (see [`utils.sh`](scripts/utils.sh) for a full description of each command).
 
 - general file and path handlers:
 ```
@@ -167,7 +167,7 @@ matters when the command line is parsed.  As such, obviously, an *optional* posi
 result in unexpected behavior.
 
 
-For example (see the [`parse_example`](parse_example) script):
+For example (see the [`parse_example`](examples/parse_examples/parse_example) script):
 
 ```shell
 source $(./parse_args keep- counts! take mount+ -- $@)
@@ -198,7 +198,7 @@ ERROR: the following arguments are required: mount
 
 ## Implementation
 
-The source code is available [here](parse_args.py) and revolves around adding arguments to `argparse.ArgumentParser` dynamically:
+The source code is available [here](parse-args/parse_args.pyrse_args.py) and revolves around adding arguments to `argparse.ArgumentParser` dynamically:
 
 ```python
     for arg in args:
@@ -210,7 +210,7 @@ The source code is available [here](parse_args.py) and revolves around adding ar
             parser.add_argument(f"{prefix}{m.group('opt')}", **kwargs)
 ```
 
-We have subclassed the `ArgumentParser` with a [`StderrParser`](parse_args.py#lines-12) so that:
+We have subclassed the `ArgumentParser` with a [`StderrParser`](parse-args/parse_args.pyrse_args.py#lines-12) so that:
 
 * when erroring out, we emit error messages to `stderr` so they don't get "swallowed" in the bash script; and
 * we need to exit with an error code, so that using `set -e` in our shell script will cause it to terminate, instead of executing the `source` command with potentially unexpected consequences.

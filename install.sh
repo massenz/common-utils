@@ -9,9 +9,15 @@
 
 set -eu
 
-declare -r TARBALL="https://github.com/massenz/common-utils/releases/download/$VERSION/common-utils-$VERSION.tar.gz"
+if [[ -z ${VERSION:-} || -z ${COMMON_UTILS} ]]
+then
+    echo "A release version must be defined via the \$VERSION env var, and"
+    echo "a destination folder via \$COMMON_UTILS (it will be created if it doesn't exist)"
+    exit 1
+fi
 
 echo "Installing common-utils Rel. $VERSION to $COMMON_UTILS"
+declare -r TARBALL="https://github.com/massenz/common-utils/releases/download/$VERSION/common-utils-$VERSION.tar.gz"
 if [[ ! -d ${COMMON_UTILS} ]]
 then
   mkdir -p ${COMMON_UTILS}
