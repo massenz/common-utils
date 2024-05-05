@@ -18,7 +18,7 @@ fi
 
 declare -r DEST=$(mktemp -d)
 declare -r BASE=$(abspath $(dirname $0))
-declare -r MISC=(scripts/utils.sh templates/ parse-args/parse_args.py)
+declare -r MISC=(parse-args/parse_args.py scripts/utils.sh images templates)
 
 pushd ${BASE}
 for f in $(ls scripts/) ; do
