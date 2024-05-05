@@ -7,7 +7,10 @@
 ![C++](https://img.shields.io/badge/C++-17-red)
 ![OS](https://img.shields.io/badge/OS-Linux,%20MacOS-green)
 
-This is a collection of utility scripts to simplify option parsing from shell scripts, as well as simplify build/test of CMake-built C++ projects.
+This is a collection of utility scripts to simplify common tasks in shell scripts,
+as well templates for `Makefile` and testing/building C++ binaries.
+
+![Common Utils](docs/images/common-utils-small.jpeg)
 
 # Why these utilities
 
