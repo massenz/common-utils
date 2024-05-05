@@ -29,10 +29,13 @@ jobs:
           git push --tags
           echo TAG=${TAG} >> $GITHUB_ENV
 
+      # The package.sh script used to build the
+      # tarball requires `pandoc` and `zsh` to be installed.
       - name: Build tarball
         run: |
-          sudo apt install -y pandoc
-          make package
+          sudo apt-get update
+          sudo apt install -y pandoc zsh
+          zsh -c 'make package'
 
       - uses: ncipollo/release-action@v1.10.0
         with:
