@@ -30,8 +30,12 @@ cp -r templates/ $DEST/
 cp parse-args/parse_args.py $DEST/
 
 # Generate HTML instructions.
+version=$(./scripts/get-version.sh manifest.json)
+echo "<br/>
+      <img src=\"https://img.shields.io/badge/Version-${version}-red\" alt=\"Version ${version}\">
+      <br/>" > /tmp/version.html
 pandoc README.md -t html -o /tmp/README.html
-cat head.html /tmp/README.html tail.html >${DEST}/README.html
+cat head.html /tmp/version.html /tmp/README.html tail.html >${DEST}/README.html
 popd
 
 tar cf ${TARBALL} -C ${DEST} .
