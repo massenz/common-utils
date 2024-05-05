@@ -18,9 +18,9 @@ done
 # If it exists in the current directory,
 # or in the $search_dir path,
 # read each line from .gitignore
-gitignore=$(test -f ./.gitignore && echo './.gitignore' || \
-    echo "${search_dir}/.gitignore")
-if [[ -n ${gitignore} ]]; then
+gitignore=$((test -f ./.gitignore && echo './.gitignore') || \
+    (test -f "${search_dir}/.gitignore" && echo "${search_dir}/.gitignore"))
+if [[ -f ${gitignore} ]]; then
   while read -r pattern; do
     # Ignore empty lines and comments
     # Append the exclusion pattern to the find command
