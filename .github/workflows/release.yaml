@@ -38,4 +38,4 @@ jobs:
         with:
           tag: ${{ env.TAG }}
           generateReleaseNotes: true
-          artifacts: common-utils-${{ env.TAG }}.tar.gz
+          artifacts: dist/common-utils-${{ env.TAG }}.tar.gz

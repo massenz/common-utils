@@ -10,7 +10,8 @@ VERSION = $(shell ./scripts/get-version.sh manifest.json)
 TARBALL := common-utils-$(VERSION).tar.gz
 
 package:
-	./package.sh $(TARBALL)
+	@mkdir -p dist
+	./package.sh dist/$(TARBALL)
 
 test:
 	@echo "--- Running tests in the ${TESTDIR} directory"
