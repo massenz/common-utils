@@ -1,4 +1,6 @@
-# common-utils -- Shared utilities
+# `common-utils` Shell Utilities
+
+---
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Build & Test](https://github.com/massenz/common-utils/actions/workflows/test.yaml/badge.svg)](https://github.com/massenz/common-utils/actions/workflows/test.yaml)
@@ -7,10 +9,10 @@
 ![C++](https://img.shields.io/badge/C++-17-red)
 ![OS](https://img.shields.io/badge/OS-Linux,%20MacOS-green)
 
-This is a collection of utility scripts to simplify common tasks in shell scripts,
-as well templates for `Makefile` and testing/building C++ binaries.
+> A collection of utility scripts to simplify common tasks in shell scripts,
+ templates for `Makefile` and testing/building scripts for C++ projects.
 
-![Common Utils](docs/images/common-utils-small.jpeg)
+![Common Utils](images/common-utils-small.jpeg)
 
 # Why these utilities
 
@@ -201,16 +203,16 @@ ERROR: the following arguments are required: mount
 
 ## Implementation
 
-The source code is available [here](parse-args/parse_args.pyrse_args.py) and revolves around adding arguments to `argparse.ArgumentParser` dynamically:
+The source code is available [here](parse-args/parse_args.py) and revolves around adding arguments to `argparse.ArgumentParser` dynamically:
 
 ```python
-    for arg in args:
-        kwargs = {}
-        m = re.match(MODIFIED_PATTERN, arg)
-        if m:
-            # Take different action depending on the `modifier`
-            # then add to the parser.
-            parser.add_argument(f"{prefix}{m.group('opt')}", **kwargs)
+for arg in args:
+    kwargs = {}
+    m = re.match(MODIFIED_PATTERN, arg)
+    if m:
+        # Take different action depending on the `modifier`            
+        # then add to the parser.
+        parser.add_argument(f"{prefix}{m.group('opt')}", **kwargs)
 ```
 
 We have subclassed the `ArgumentParser` with a [`StderrParser`](parse-args/parse_args.pyrse_args.py#lines-12) so that:
@@ -218,7 +220,7 @@ We have subclassed the `ArgumentParser` with a [`StderrParser`](parse-args/parse
 * when erroring out, we emit error messages to `stderr` so they don't get "swallowed" in the bash script; and
 * we need to exit with an error code, so that using `set -e` in our shell script will cause it to terminate, instead of executing the `source` command with potentially unexpected consequences.
 
-## Build/Test scripts
+# Build/Test scripts
 
 These are generic scripts, which rely on a common `env.sh` script to be `source`d from the current directory:
 
