@@ -34,7 +34,7 @@ for f in ${MISC[@]} ; do
 done
 
 # Generate HTML instructions.
-version=$(./scripts/get-version.sh manifest.json)
+version=$(make version)
 echo "<br/>
       <img src=\"https://img.shields.io/badge/Version-${version}-red\" alt=\"Version ${version}\">
       <br/>" > /tmp/version.html
