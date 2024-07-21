@@ -15,13 +15,13 @@
 
 set -eu
 
-if [[ -z ${UTILS_DIR} || ! -d ${UTILS_DIR} ]]; then
+if [[ -z ${COMMON_UTILS} || ! -d ${COMMON_UTILS} ]]; then
     echo "[ERROR] The \$UTILS_DIR env var must be defined and " \
          "point to the directory which contains the Common Utilities"
     exit 1
 fi
 
-source "${UTILS_DIR}"/utils
+source "${COMMON_UTILS}"/utils.sh
 source env.sh
 
 BUILD=${1:-Debug}
@@ -34,7 +34,7 @@ if [[ -f conanfile.txt ]]; then
     success "Dependencies installed"
 fi
 
-UTILS="-DCOMMON_UTILS_DIR=${UTILS_DIR}"
+UTILS="-DCOMMON_UTILS_DIR=${COMMON_UTILS}"
 
 cd "${BUILDDIR}"
 cmake -DCMAKE_CXX_COMPILER="${CLANG}" \
