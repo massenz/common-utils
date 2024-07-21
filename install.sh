@@ -29,7 +29,7 @@ success "Utilities installed to ${COMMON_UTILS}"
 
 cat <<EOF >${HOME}/.commonrc
 export COMMON_UTILS=${COMMON_UTILS}
-source ${COMMON_UTILS}/utils
+source ${COMMON_UTILS}/utils.sh
 addpath ${COMMON_UTILS}
 EOF
 msg "Initialization configured to ${HOME}/.commonrc - source it from your .$(basename ${SHELL})rc"
