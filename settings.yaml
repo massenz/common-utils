@@ -7,7 +7,7 @@ name: application-name
 
 # Manually update this value to change the semantic version
 # of your binary/container image.
-version: 0.10.0
+version: 0.10.1
 description: "Common utilities for Shell Scripts"
 author: Marco Massenzio (marco@alertavert.com)
 license: Apache-2.0
