@@ -24,7 +24,7 @@ then
 fi
 curl -s -L ${TARBALL} | tar x -C ${COMMON_UTILS}
 
-source ${COMMON_UTILS}/utils
+source ${COMMON_UTILS}/utils.sh
 success "Utilities installed to ${COMMON_UTILS}"
 
 cat <<EOF >${HOME}/.commonrc
