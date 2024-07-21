@@ -27,14 +27,28 @@ else
     $(error Unsupported architecture $(UNAME_M))
 endif
 
+yq != which yq
+ifeq ($(strip $(yq)),)
+  $(error yq not installed)
+endif
+
+settings != find . -name settings.yaml
+ifeq ($(strip $(settings)),)
+  $(warning $(YELLOW)This makefile requires a settings.yaml file to define appname and version$(RESET))
+else
+  appname != yq -r .name settings.yaml
+  version != yq -r .version settings.yaml
+endif
 
 # Versioning
-# The `version` is a static value, set in settings.yaml, and ONLY used to tag the release.
-VERSION ?= $(shell cat settings.yaml | yq -r .version)
-GIT_COMMIT := $(shell git rev-parse --short HEAD)
-RELEASE := v$(VERSION)-g$(GIT_COMMIT)
+# The `version` is a static value, set in settings.yaml, and ONLY used to tag the release,
+# `release` includes the git SHA and will be used to tag the binary and container.
+git_commit != git rev-parse --short HEAD
+ifndef version
+  $(error $(RED)version must be defined, use yq and settings.yaml, or define it before including this file$(RESET))
+endif
+release := v$(version)-g$(git_commit)
 
-prog := $(shell cat settings.yaml | yq -r .name)
 
 # Certificates
 certs_dir := ssl-config
@@ -47,17 +61,22 @@ compose := docker/docker-compose.yaml
 dockerfile := docker/Dockerfile
 
 ##@ Help
+#
 # The help target prints out all targets with their descriptions organized
-# beneath their categories. The categories are represented by '##@' and the
-# target descriptions by '##'. The awk commands is responsible for reading the
-# entire set of makefiles included in this invocation, looking for lines of the
-# file as xyz: ## something, and then pretty-format the target and help. Then,
-# if there's a line with ##@ something, that gets pretty-printed as a category.
+# beneath their categories.
+#
+# The categories are represented by '##@' and the target descriptions by '##'.
+#
+# A category is defined if there's a line starting with ##@ <CATEGORY>,
+# that gets pretty-printed as a category.
+# A target is defined by a trailing comment starting with ##.
+#
 # More info on the usage of ANSI control characters for terminal formatting:
 # https://en.wikipedia.org/wiki/ANSI_escape_code#SGR_parameters
+#
 # More info on the awk command:
 # http://linuxcommand.org/lc3_adv_awk.php
-
+#
 .PHONY: help
 help: ## Display this help.
 	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n"} /^[a-zA-Z_0-9-]+:.*?##/ { printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)

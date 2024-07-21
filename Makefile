@@ -8,7 +8,7 @@
 include templates/common.mk
 
 TESTDIR := parse-args
-TARBALL := common-utils-$(VERSION).tar.gz
+TARBALL := common-utils-$(version).tar.gz
 python := $(shell which python3)
 
 package:
@@ -24,4 +24,4 @@ endif
 	$(python) -m unittest discover -s ${TESTDIR}
 
 version:
-	@echo $(VERSION)
+	@echo $(version)
