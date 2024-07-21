@@ -5,17 +5,23 @@
 #
 # Author: Marco Massenzio (marco@alertavert.com)
 
+include templates/common.mk
+
 TESTDIR := parse-args
-VERSION = $(shell ./scripts/get-version.sh manifest.json)
 TARBALL := common-utils-$(VERSION).tar.gz
+python := $(shell which python3)
 
 package:
 	@mkdir -p dist
 	./package.sh dist/$(TARBALL)
 
 test:
+ifeq ($(strip $(python)),)
+	@echo "$(RED)ERROR:$(RESET) Missing python3 binary"
+	@exit 1
+endif
 	@echo "--- Running tests in the ${TESTDIR} directory"
-	python -m unittest discover -s ${TESTDIR}
+	$(python) -m unittest discover -s ${TESTDIR}
 
 version:
 	@echo $(VERSION)

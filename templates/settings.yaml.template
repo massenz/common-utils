@@ -1,0 +1,14 @@
+# Copyright (c) 2023-2024 AlertAvert.com
+# All rights reserved.
+# Created by Marco Massenzio, 2023-07-13
+
+# This will be the name of the binary
+name: application-name
+
+# Manually update this value to change the semantic version
+# of your binary/container image.
+version: 0.10.0
+description: Short description of your project here
+author: Marco Massenzio (marco@alertavert.com)
+license: Apache-2.0
+url: https://github.com/massenz/common-utils
