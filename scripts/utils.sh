@@ -228,3 +228,17 @@ function ask {
     echo -n "\n"
     return $res
 }
+
+# Adds an emoji prefix to a message based on its context.
+#
+# If OPENAI_KEY is set, it uses OpenAI to generate a contextually appropriate emoji.
+# Otherwise, it falls back to a default wrench emoji.
+#
+# Usage: emojify MESSAGE
+function emojify {
+    if [ -n "$OPENAI_KEY" ]; then
+      gen-emoji.py "$1" | tr -d '"'
+    else
+      echo "--- 🔧 $1"
+    fi
+}

@@ -263,6 +263,118 @@ msg "Build Platform: ${OS_NAME}"
 See the [`libdist` project](https://github.com/massenz/distlib) for an example.
 
 
+# Emojfy your Echo
+
+The `gen-emoji` script uses OpenAI to generate contextually appropriate emojis for your shell script output messages, making them more visually appealing and easier to read.
+
+## Requirements
+
+1. Python 3.6 or higher
+2. The `openai` and `halo` Python modules:
+   ```shell
+   pip install openai halo
+   ```
+3. An OpenAI API key set in the `OPENAI_KEY` environment variable:
+   ```shell
+   export OPENAI_KEY=your-api-key
+   ```
+
+## Setup
+
+Ensure the `COMMON_UTILS` environment variable is set to the directory containing the common-utils repository (or just follow the [installation](#install) instructions above):
+
+```shell
+export COMMON_UTILS=/path/to/common-utils
+export PATH=$PATH:$COMMON_UTILS
+```
+
+## Usage
+
+You can use the `gen-emoji` just like any other command-line utility. It takes a string input and returns a formatted string with an emoji prefix based on the context of the message.
+
+```shell
+$ gen-emoji "Building a skyscraper"
+"--- 🏗️ Building a skyscraper"
+```
+and then copy and paste the output into your shell script.
+
+More interestingly, it can be used directly in your shell scripts to add emojis to your output messages:
+
+```shell
+#!/bin/bash
+
+# Source the utils.sh file from COMMON_UTILS
+source $COMMON_UTILS/utils.sh
+
+# Use the emojify function in your script
+emojify "Starting backup process"
+# Your backup commands here
+
+emojify "Compressing files"
+# Your compression commands here
+
+emojify "Backup completed successfully"
+```
+
+The script takes a text input and returns a formatted string with an emoji prefix. The emoji is chosen based on the context of the message using OpenAI's API. If the OpenAI API key is not set, it will fall back to a default wrench emoji.
+
+You can also add this to your `.bashrc` or `.zshrc` file to make the function available in your shell:
+
+```shell
+# Source the utils.sh file from COMMON_UTILS
+source $COMMON_UTILS/scripts/utils.sh
+```
+
+Then use it in your terminal or scripts:
+
+```shell
+$ emojify "Building Docker image"
+--- 🐳 Building Docker image
+```
+
+
+# Emojify your Makefile
+
+The `common.mk` template provides a convenient function to add emojis to your Makefile output messages, making them more visually appealing and easier to read.
+
+## Setup
+
+1. First, ensure the `COMMON_UTILS` environment variable is set to the directory containing the common-utils repository:
+
+```shell
+export COMMON_UTILS=/path/to/common-utils
+```
+
+2. Include the common.mk template in your Makefile:
+
+```makefile
+include $(COMMON_UTILS)/templates/common.mk
+```
+
+## Usage
+
+There are two ways to use the emojify functionality:
+
+1. As a function call within your Makefile targets:
+
+```makefile
+compile:  ## Compiles the binary
+	$(call emojify,Compiling program)
+	# Your compilation commands here
+```
+
+2. As a standalone command:
+
+```makefile
+deploy:  ## Deploys the application
+	emojify "Deploying application"
+	# Your deployment commands here
+```
+
+If the OpenAI API key is set in the `OPENAI_KEY` environment variable, the emojify function will use OpenAI to generate contextually appropriate emojis. Otherwise, it will fall back to a default wrench emoji.
+
+See [examples/emojify.mk](examples/emojify.mk) for a complete example.
+
 # Contributions
 
 Are warmly appreciated; please open an `Issue` to describe what you think is missing and you'd like to see added; or even feel free to contribute code via `Pull Request`.
