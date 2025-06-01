@@ -237,7 +237,7 @@ function ask {
 # Usage: emojify MESSAGE
 function emojify {
     if [ -n "$OPENAI_KEY" ]; then
-      gen-emoji.py "$1" | tr -d '"'
+      gen-emoji "$1" | tr -d '"'
     else
       echo "--- 🔧 $1"
     fi
