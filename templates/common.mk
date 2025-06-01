@@ -61,6 +61,56 @@ server-csr := $(certs_dir)/localhost-csr.json
 compose := docker/docker-compose.yaml
 dockerfile := docker/Dockerfile
 
+# Path to the gen-emoji script
+# COMMON_UTILS environment variable must be defined and point to the directory containing the script
+ifndef COMMON_UTILS
+  $(warning $(YELLOW)COMMON_UTILS environment variable is not defined$(RESET))
+  GEN_EMOJI :=
+else
+  GEN_EMOJI := $(COMMON_UTILS)/gen-emoji
+  ifeq ($(wildcard $(GEN_EMOJI)),)
+    $(warning $(YELLOW)gen-emoji script not found at $(GEN_EMOJI)$(RESET))
+    GEN_EMOJI :=
+  endif
+endif
+
+# Function to add emoji to messages
+# Usage:
+#   $(call emojify,Your message here)
+#   or
+#   emojify "Your message here"
+#
+# This function adds an emoji to the beginning of a message.
+# If the gen-emoji script is available and the OPENAI_KEY environment variable is set,
+# it will use OpenAI to generate a contextually appropriate emoji.
+# Otherwise, it will fall back to a default wrench emoji.
+#
+# Example usage in a Makefile:
+#   compile:  ## Compiles the binary
+#       $(call emojify,Compiling program)
+#       # or
+#       emojify "Compiling program"
+#       build bin foo bar
+define emojify
+	@if [ -n "$(GEN_EMOJI)" ] && [ -x "$(GEN_EMOJI)" ] && [ -n "$$OPENAI_KEY" ]; then \
+		$(GEN_EMOJI) "$(1)" | tr -d '"'; \
+	else \
+		echo "--- 🔧 $(1)"; \
+	fi
+endef
+
+# Standalone emojify command
+# Usage: emojify "Your message here"
+.PHONY: emojify
+emojify:
+	@$(eval MESSAGE := $(shell echo "$(filter-out $@,$(MAKECMDGOALS))" | sed 's/^"//;s/"$$//'))
+	@$(if $(MESSAGE),$(call emojify,$(MESSAGE)),$(error Usage: emojify "Your message here"))
+
+# This target catches all arguments after the emojify command
+# It does nothing but allows the arguments to be passed to the emojify target
+%:
+	@:
+
 ##@ Help
 #
 # The help target prints out all targets with their descriptions organized
